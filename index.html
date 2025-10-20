@@ -6,12 +6,9 @@
   <style>
     body {
       margin: 0;
-      background: #ffffff;
       overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
-    }
-    canvas {
-      display: block;
+      background: linear-gradient(to bottom, #e6f2ff, #ffffff);
     }
     #versiculo {
       position: absolute;
@@ -38,10 +35,18 @@
 
     // Foco
     const bulbGeometry = new THREE.SphereGeometry(0.3, 32, 32);
-    const bulbMaterial = new THREE.MeshStandardMaterial({emissive: 0x000000});
+    const bulbMaterial = new THREE.MeshStandardMaterial({emissive: 0x000000, emissiveIntensity: 1});
     const bulb = new THREE.Mesh(bulbGeometry, bulbMaterial);
     bulb.position.y = 0;
     scene.add(bulb);
+
+    // Filamento simbólico (Tav estilizado)
+    const filamentGeometry = new THREE.TorusGeometry(0.1, 0.02, 16, 100);
+    const filamentMaterial = new THREE.MeshStandardMaterial({color: 0xffaa00});
+    const filament = new THREE.Mesh(filamentGeometry, filamentMaterial);
+    filament.rotation.x = Math.PI / 2;
+    filament.position.y = 0;
+    scene.add(filament);
 
     // Cable
     const cableGeometry = new THREE.CylinderGeometry(0.02, 0.02, 1, 16);
@@ -50,7 +55,7 @@
     cable.position.y = 0.5;
     scene.add(cable);
 
-    // Luz
+    // Luz pulsante
     const light = new THREE.PointLight(0xffddaa, 1, 5);
     light.position.set(0, 0, 0);
     light.visible = false;
@@ -58,7 +63,6 @@
 
     // Cámara
     camera.position.z = 3;
-    scene.background = new THREE.Color(0xffffff);
 
     // Luz ambiental
     const ambient = new THREE.AmbientLight(0x888888);
@@ -66,9 +70,9 @@
 
     // Interacción
     let encendido = false;
+    let tiempo = 0;
     window.addEventListener('click', () => {
       encendido = !encendido;
-      bulbMaterial.emissive.set(encendido ? 0xffddaa : 0x000000);
       light.visible = encendido;
       document.getElementById('versiculo').style.opacity = encendido ? 1 : 0;
     });
@@ -77,6 +81,19 @@
     function animate() {
       requestAnimationFrame(animate);
       bulb.rotation.y += 0.005;
+      filament.rotation.y += 0.01;
+
+      if (encendido) {
+        tiempo += 0.05;
+        const intensidad = 1 + Math.sin(tiempo) * 0.3;
+        bulbMaterial.emissive.setHex(0xffddaa);
+        bulbMaterial.emissiveIntensity = intensidad;
+        light.intensity = intensidad;
+      } else {
+        bulbMaterial.emissive.setHex(0x000000);
+        bulbMaterial.emissiveIntensity = 1;
+      }
+
       renderer.render(scene, camera);
     }
     animate();
