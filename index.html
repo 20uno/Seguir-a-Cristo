@@ -55,6 +55,13 @@
     cable.position.y = 0.5;
     scene.add(cable);
 
+    // Base suspendida
+    const baseGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.1, 32);
+    const baseMaterial = new THREE.MeshStandardMaterial({color: 0xcccccc});
+    const base = new THREE.Mesh(baseGeometry, baseMaterial);
+    base.position.y = -0.4;
+    scene.add(base);
+
     // Luz pulsante
     const light = new THREE.PointLight(0xffddaa, 1, 5);
     light.position.set(0, 0, 0);
@@ -62,7 +69,8 @@
     scene.add(light);
 
     // Cámara
-    camera.position.z = 3;
+    camera.position.set(0, 0.5, 3);
+    let angle = 0;
 
     // Luz ambiental
     const ambient = new THREE.AmbientLight(0x888888);
@@ -93,6 +101,12 @@
         bulbMaterial.emissive.setHex(0x000000);
         bulbMaterial.emissiveIntensity = 1;
       }
+
+      // Movimiento orbital de cámara
+      angle += 0.002;
+      camera.position.x = Math.sin(angle) * 3;
+      camera.position.z = Math.cos(angle) * 3;
+      camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
     }
