@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seguir a Cristo y la Corona de Vida</title>
+  <style>
+    :root {
+      --celeste: #0078d7;
+      --fondo: #ffffff;
+      --texto: #333333;
+      --borde: #dddddd;
+      --hover: #e6f2ff;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--fondo);
+      color: var(--texto);
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      color: var(--celeste);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .section {
+      border: 1px solid var(--borde);
+      border-radius: 8px;
+      margin: 1rem 0;
+      padding: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .section:hover {
+      background-color: var(--hover);
+    }
+    .content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease, opacity 0.6s ease;
+      opacity: 0;
+    }
+    .content.show {
+      max-height: 300px;
+      opacity: 1;
+      margin-top: 0.5rem;
+    }
+    .icon {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+      fill: var(--celeste);
+    }
+    .verse {
+      font-style: italic;
+      color: var(--celeste);
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌟 Seguir a Cristo y la Corona de Vida</h1>
+
+  <div class="section" onclick="toggle(this, 'Santiago 1:17', 0)">
+    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+    <strong>Fuente: Dios Padre</strong>
+    <div class="content">
+      Luz pura, amor eterno, gracia vivificante, paz y armonía.
+      <div class="verse" id="verse0">Cargando versículo...</div>
+    </div>
+  </div>
+
+  <div class="section" onclick="toggle(this, 'Juan 14:6', 1)">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2 L15 8 L9 8 Z"/></svg>
+    <strong>Conexión: Cristo, el Logos</strong>
+    <div class="content">
+      Camino, verdad y vida; revelador del Padre; modelo de obediencia.
+      <div class="verse" id="verse1">Cargando versículo...</div>
+    </div>
+  </div>
+
+  <div class="section" onclick="toggle(this, 'Mateo 5:14', 2)">
+    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg>
+    <strong>Receptor: El discípulo</strong>
+    <div class="content">
+      Reflejo de la luz divina; vasija de comunión; llamado a permanecer.
+      <div class="verse" id="verse2">Cargando versículo...</div>
+    </div>
+  </div>
+
+  <div class="section" onclick="toggle(this, 'Juan 16:13', 3)">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2 L12 22 M2 12 L22 12"/></svg>
+    <strong>Calor: Espíritu Santo</strong>
+    <div class="content">
+      Consolador y guía; fuego que purifica; presencia que habita.
+      <div class="verse" id="verse3">Cargando versículo...</div>
+    </div>
+  </div>
+
+  <div class="section" onclick="toggle(this, 'Juan 15:12', 4)">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M4 12 L20 12 M12 4 L12 20"/></svg>
+    <strong>Fruto: Obediencia y amor</strong>
+    <div class="content">
+      Práctica espiritual diaria; amor al prójimo; cumplimiento del mandamiento.
+      <div class="verse" id="verse4">Cargando versículo...</div>
+    </div>
+  </div>
+
+  <div class="section" onclick="toggle(this, 'Apocalipsis 2:10', 5)">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2 L15 8 L9 8 Z M12 22 L15 16 L9 16 Z"/></svg>
+    <strong>Corona: Vida eterna</strong>
+    <div class="content">
+      Unidad con el Padre; plenitud espiritual; Shejiná encendida.
+      <div class="verse" id="verse5">Cargando versículo...</div>
+    </div>
+  </div>
+
+  <script>
+    function toggle(element, verseRef, index) {
+      const content = element.querySelector('.content');
+      content.classList.toggle('show');
+
+      const verseEl = document.getElementById(`verse${index}`);
+      if (verseEl.textContent.includes('Cargando')) {
+        fetch(`https://bible-api.com/${encodeURIComponent(verseRef)}`)
+          .then(res => res.json())
+          .then(data => {
+            verseEl.textContent = `"${data.text.trim()}" — ${data.reference}`;
+          })
+          .catch(() => {
+            verseEl.textContent = 'Versículo no disponible.';
+          });
+      }
+    }
+  </script>
+
+</body>
+</html>
